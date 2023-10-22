@@ -24,6 +24,7 @@ const FormButton: FC<Props> = ({
       as={ButtonProps.as}
       href={ButtonProps.href}
       target={ButtonProps.target}
+      onPress={ButtonProps.onPress}
       className={cn(
         fullWidth && 'w-full',
         'text-sm font-medium tracking-[1.25px] uppercase px-6'

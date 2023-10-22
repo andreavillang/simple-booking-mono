@@ -22,7 +22,7 @@ const config: Config = {
         background: colors.slate[950],
         foreground: colors.slate[200],
         primary: colors.blue[600],
-        secondary: colors.amber[500],
+        secondary: colors.cyan[600],
         danger: colors.red[600],
       },
     },

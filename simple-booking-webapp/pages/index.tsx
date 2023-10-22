@@ -1,25 +1,35 @@
+import React, { useState } from 'react'
+
 import FormButton from '@/components/FormButton'
 import HowItWorks from '@/components/HowItWorks'
 import Layout from '@/components/Layout'
-import Link from 'next/link'
+import Appointments from '@/components/Appointments'
+import { Link } from '@nextui-org/react'
+import BookModal from '@/components/BookModal'
 
 export default function Home() {
+  const [isBookingModalVisible, setIsBookingModalVisible] = useState<boolean>(false)
+
   return (
+    <>
     <Layout>
-      <div className='mb-40'>
+      <div className='mb-32'>
         <h3>Welcome to SimpleBook</h3>
         <h3 className='mb-8'>Book appointments in 3 easy steps!</h3>
         <HowItWorks />
-        <div className='flex justify-center'>
-          <FormButton type='submit' color='primary' as={Link} href='/create'>
+        <div className='flex flex-col items-center gap-2'>
+          <FormButton type='submit' color='primary' onPress={() => setIsBookingModalVisible(true)} >
             Book an appointment now
           </FormButton>
+          <Link href='#appointments' size='sm' color='foreground' className='opacity-60 cursor-pointer' >or see existing appointments below</Link>
         </div>
       </div>
 
-      <div id='booking-list'>
-        <h6>Current Appointments</h6>
-      </div>
+      <Appointments />
     </Layout>
+    {isBookingModalVisible && (
+      <BookModal isOpen={isBookingModalVisible} onClose={() => setIsBookingModalVisible(false)} />
+    )}
+    </>
   )
 }
