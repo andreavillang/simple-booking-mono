@@ -8,6 +8,7 @@ import FormTextArea from '../FormItems/FormTextArea'
 import { timeSlots } from '@/utils/data'
 import TimeCheckbox from './TimeCheckbox'
 import moment from 'moment'
+import { Appointment } from '@/pages/types'
 
 type Inputs = {
   name: string
@@ -19,20 +20,34 @@ type Inputs = {
 interface Props {
   header?: string
   descripion?: string
+  isEditForm?: boolean
   removeWrapper?: boolean
+  data?: Appointment
 }
 
 const AppointmentForm: FC<Props> = ({
   header = 'Book an appointment',
   descripion = 'Fill in the details we need below',
   removeWrapper,
+  isEditForm,
+  data,
 }) => {
-  const [selectedTime, setSelectedTime] = useState<string>('')
+  const [selectedTime, setSelectedTime] = useState<string>(
+    data?.date
+      ? moment(data?.date)
+          .format('H')
+          .toString()
+      : ''
+  )
 
   const formDefaultValues = {
-    name: '',
-    comments: '',
-    date: '',
+    name: data?.name ? data.name : '',
+    comments: data?.comments ? data.comments : '',
+    date: data?.date
+      ? moment(data?.date)
+          .format('YYYY-MM-DD')
+          .toString()
+      : '',
     password: '',
   }
 
@@ -132,6 +147,10 @@ const AppointmentForm: FC<Props> = ({
             control={control}
             rules={{
               required: 'Please select a date',
+              min: {
+                value: moment().format('YYYY-MM-DD'),
+                message: 'Please select a valid date',
+              },
             }}
             render={({ field: { onChange, value } }) => (
               <FormInput
@@ -141,6 +160,7 @@ const AppointmentForm: FC<Props> = ({
                 onValueChange={onChange}
                 value={value}
                 isRequired
+                min={moment().format('YYYY-MM-DD')}
                 hasError={errors.date && true}
               />
             )}
@@ -165,30 +185,41 @@ const AppointmentForm: FC<Props> = ({
             ))}
           </div>
         </div>
-        <div className='relative'>
-          <Controller
-            name='password'
-            control={control}
-            rules={{
-              required:
-                'Use a password so you can edit or delete your appointment anytime',
-            }}
-            render={({ field: { onChange, value } }) => (
-              <FormInput
-                label='Password'
-                placeholder='Enter your password'
-                type='password'
-                onValueChange={onChange}
-                value={value}
-                isRequired
-                hasError={errors.password && true}
-              />
-            )}
-          />
-          {errors.password && (
-            <small className='absolute left-0 -bottom-4 text-danger ml-1'>
-              {errors.password.message}
-            </small>
+
+        <div>
+          {isEditForm && (
+            <>
+              <small className='ml-1 font-medium'>
+                Enter your password to confirm your edits
+              </small>
+              <div className='relative mt-2'>
+                <Controller
+                  name='password'
+                  control={control}
+                  rules={{
+                    required: isEditForm
+                      ? 'We need your password to confirm your edits'
+                      : 'Use a password so you can edit or delete your appointment anytime',
+                  }}
+                  render={({ field: { onChange, value } }) => (
+                    <FormInput
+                      label='Password'
+                      placeholder='Enter your password'
+                      type='password'
+                      onValueChange={onChange}
+                      value={value}
+                      isRequired
+                      hasError={errors.password && true}
+                    />
+                  )}
+                />
+                {errors.password && (
+                  <small className='absolute left-0 -bottom-4 text-danger ml-1'>
+                    {errors.password.message}
+                  </small>
+                )}
+              </div>
+            </>
           )}
         </div>
 

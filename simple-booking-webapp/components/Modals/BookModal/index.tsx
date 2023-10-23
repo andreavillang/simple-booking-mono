@@ -1,22 +1,20 @@
 import React, { FC } from 'react'
 import {
-  Input,
   Modal,
   ModalBody,
   ModalContent,
-  ModalFooter,
-  ModalHeader,
   useDisclosure,
 } from '@nextui-org/react'
-import FormButton from '../FormItems/FormButton'
-import AppointmentForm from '../AppointmentForm'
+import AppointmentForm from '../../AppointmentForm'
+import { Appointment } from '@/pages/types'
 
 interface Props {
   isOpen: boolean
   onClose: () => void
+  data?: Appointment
 }
 
-const BookModal: FC<Props> = ({ isOpen, onClose }) => {
+const BookModal: FC<Props> = ({ data, isOpen, onClose }) => {
   const { onOpenChange } = useDisclosure()
 
   const customStyles = {
@@ -29,19 +27,21 @@ const BookModal: FC<Props> = ({ isOpen, onClose }) => {
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       onClose={onClose}
+      size='xl'
       classNames={customStyles}
       placement='top-center'
+      scrollBehavior='outside'
     >
       <ModalContent>
-        {(onClose) => (
-          <ModalBody>
-            <AppointmentForm
-              header='Edit your appointment'
-              descripion='Change your details then enter your password to confirm your identity'
-              removeWrapper
-            />
-          </ModalBody>
-        )}
+        <ModalBody>
+          <AppointmentForm
+            header='Edit your appointment'
+            descripion='Change your details then enter your password to confirm your identity'
+            removeWrapper
+            data={data}
+            isEditForm
+          />
+        </ModalBody>
       </ModalContent>
     </Modal>
   )

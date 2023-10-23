@@ -1,5 +1,4 @@
 import { Appointment } from '@/pages/types'
-import moment from 'moment'
 
 export const bookingTableHeaders = [
   { name: 'DATE', uid: 'date' },
