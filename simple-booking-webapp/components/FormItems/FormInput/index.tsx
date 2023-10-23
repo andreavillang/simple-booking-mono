@@ -15,17 +15,7 @@ const FormInput: FC<Props> = ({ hasError, ...InputProps }) => {
   }
 
   return (
-    <Input
-      label={InputProps.label}
-      placeholder={InputProps.placeholder}
-      classNames={customStyles}
-      type={InputProps.type}
-      size='md'
-      variant='flat'
-      onValueChange={InputProps.onValueChange}
-      value={InputProps.value}
-      isRequired={InputProps.isRequired}
-    />
+    <Input classNames={customStyles} size='md' variant='flat' {...InputProps} />
   )
 }
 

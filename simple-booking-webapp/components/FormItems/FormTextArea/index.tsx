@@ -16,15 +16,12 @@ const FormTextArea: FC<Props> = ({ hasError, ...TextAreaProps }) => {
 
   return (
     <Textarea
-      label={TextAreaProps.label}
-      placeholder={TextAreaProps.placeholder}
       classNames={customStyles}
       size='md'
       variant='flat'
-      onValueChange={TextAreaProps.onValueChange}
-      value={TextAreaProps.value}
-      isRequired={TextAreaProps.isRequired}
+      maxLength={250}
       isMultiline
+      {...TextAreaProps}
     />
   )
 }

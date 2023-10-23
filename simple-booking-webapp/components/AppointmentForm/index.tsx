@@ -1,13 +1,15 @@
 import React, { FC, useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import cn from 'classnames'
+import moment from 'moment'
 
 import FormButton from '../FormItems/FormButton'
 import FormInput from '../FormItems/FormInput'
 import FormTextArea from '../FormItems/FormTextArea'
-import { timeSlots } from '@/utils/data'
 import TimeCheckbox from './TimeCheckbox'
-import moment from 'moment'
+import { Appointment } from '@/pages/types'
+import { timeSlots } from '@/utils/data'
+import { formatDateForInput } from '@/utils/functions'
 
 type Inputs = {
   name: string
@@ -19,20 +21,34 @@ type Inputs = {
 interface Props {
   header?: string
   descripion?: string
+  isEditForm?: boolean
   removeWrapper?: boolean
+  data?: Appointment
 }
 
 const AppointmentForm: FC<Props> = ({
   header = 'Book an appointment',
   descripion = 'Fill in the details we need below',
   removeWrapper,
+  isEditForm,
+  data,
 }) => {
-  const [selectedTime, setSelectedTime] = useState<string>('')
+  const [selectedTime, setSelectedTime] = useState<string>(
+    data?.date
+      ? moment(data?.date)
+          .format('H')
+          .toString()
+      : ''
+  )
 
   const formDefaultValues = {
-    name: '',
-    comments: '',
-    date: '',
+    name: data?.name ? data.name : '',
+    comments: data?.comments ? data.comments : '',
+    date: data?.date
+      ? moment(data?.date)
+          .format('YYYY-MM-DD')
+          .toString()
+      : '',
     password: '',
   }
 
@@ -66,14 +82,18 @@ const AppointmentForm: FC<Props> = ({
 
   const buttonDisabled = !isValid
 
+  const setPasswordHeader = isEditForm
+    ? 'Enter your password to confirm your edits'
+    : 'We need a password so you can edit or cancel your appointments anytime'
+
   return (
     <div id='form' className='mx-auto w-full lg:max-w-[600px]'>
       <h6>{header}</h6>
-      <p className='opacity-60 mb-8 leading-tight'>{descripion}</p>
+      <p className='opacity-60 mb-8'>{descripion}</p>
       <form
         className={cn(
-          'flex flex-col gap-6',
-          !removeWrapper && 'bg-card p-6 rounded-2xl'
+          'flex flex-col gap-4 lg:gap-6',
+          !removeWrapper && 'bg-card p-4 lg:p-6 rounded-2xl'
         )}
         onSubmit={handleSubmit(onSubmit)}
       >
@@ -132,6 +152,10 @@ const AppointmentForm: FC<Props> = ({
             control={control}
             rules={{
               required: 'Please select a date',
+              min: {
+                value: formatDateForInput(moment()),
+                message: 'Please select a valid date',
+              },
             }}
             render={({ field: { onChange, value } }) => (
               <FormInput
@@ -141,6 +165,7 @@ const AppointmentForm: FC<Props> = ({
                 onValueChange={onChange}
                 value={value}
                 isRequired
+                min={formatDateForInput(moment())}
                 hasError={errors.date && true}
               />
             )}
@@ -165,36 +190,43 @@ const AppointmentForm: FC<Props> = ({
             ))}
           </div>
         </div>
-        <div className='relative'>
-          <Controller
-            name='password'
-            control={control}
-            rules={{
-              required:
-                'Use a password so you can edit or delete your appointment anytime',
-            }}
-            render={({ field: { onChange, value } }) => (
-              <FormInput
-                label='Password'
-                placeholder='Enter your password'
-                type='password'
-                onValueChange={onChange}
-                value={value}
-                isRequired
-                hasError={errors.password && true}
-              />
+
+        <hr className='border-card-lightest border-2 opacity-50 mt-2' />
+
+        <div>
+          <small className='ml-1 font-medium'>{setPasswordHeader}</small>
+          <div className='relative mt-2'>
+            <Controller
+              name='password'
+              control={control}
+              rules={{
+                required: isEditForm
+                  ? 'We need your password to confirm your edits'
+                  : 'Use a password so you can edit or delete your appointment anytime',
+              }}
+              render={({ field: { onChange, value } }) => (
+                <FormInput
+                  label='Password'
+                  placeholder='Enter your password'
+                  type='password'
+                  onValueChange={onChange}
+                  value={value}
+                  isRequired
+                  hasError={errors.password && true}
+                />
+              )}
+            />
+            {errors.password && (
+              <small className='absolute left-0 -bottom-4 text-danger ml-1'>
+                {errors.password.message}
+              </small>
             )}
-          />
-          {errors.password && (
-            <small className='absolute left-0 -bottom-4 text-danger ml-1'>
-              {errors.password.message}
-            </small>
-          )}
+          </div>
         </div>
 
         <div className='flex justify-center'>
           <FormButton type='submit' isDisabled={buttonDisabled}>
-            Book appointment
+            {isEditForm ? 'Edit appointment' : 'Book appointment'}
           </FormButton>
         </div>
       </form>
