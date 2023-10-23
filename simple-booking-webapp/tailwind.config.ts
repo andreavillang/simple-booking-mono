@@ -11,18 +11,21 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-      },
       colors: {
         transparent: 'transparent',
         current: 'currentColor',
-        background: colors.slate[950],
+        background: {
+          DEFAULT: colors.slate[950],
+          dark: '#000000',
+        },
         foreground: colors.slate[200],
         primary: colors.blue[600],
         secondary: colors.cyan[600],
+        card: {
+          lightest: colors.slate[700],
+          light: colors.slate[800],
+          DEFAULT: colors.slate[900],
+        },
         danger: colors.red[600],
       },
     },

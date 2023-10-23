@@ -10,9 +10,11 @@ interface Props {
 const Panel: FC<Props> = ({ header, description, icon }) => {
   return (
     <Card
-      className='py-4 bg-slate-900'
+      className='py-4 bg-card'
       classNames={{
-        base: ['data-[hover=true]:bg-slate-800 data-[hover=true]:scale-105'],
+        base: [
+          'dark:data-[hover=true]:bg-card-light data-[hover=true]:scale-105',
+        ],
       }}
       isHoverable
     >
