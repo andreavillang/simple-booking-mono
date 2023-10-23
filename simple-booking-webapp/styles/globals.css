@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  @apply text-foreground;
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -24,4 +28,29 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+
+h1 {
+  @apply text-4xl lg:text-[94px] font-light leading-tight tracking-[-1.5px];
+}
+h2 {
+  @apply text-3xl lg:text-[59px] font-light leading-tight tracking-[-0.5px];
+}
+h3 {
+  @apply text-2xl lg:text-[47px] leading-tight font-normal;
+}
+h4 {
+  @apply text-xl lg:text-[33px] font-normal leading-tight tracking-[0.25px];
+}
+h5 {
+  @apply text-lg lg:text-2xl leading-tight font-normal;
+}
+h6 {
+  @apply text-base lg:text-xl font-medium leading-tight tracking-[0.15px];
+}
+p {
+  @apply text-base font-normal leading-tight tracking-[0.5px];
+}
+small {
+  @apply text-xs font-normal leading-tight tracking-[0.4px];
 }
