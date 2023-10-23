@@ -17,13 +17,14 @@ const FormButton: FC<Props> = ({
       size='md'
       variant={ButtonProps.variant}
       color={color}
-      disabled={ButtonProps.disabled}
+      isDisabled={ButtonProps.isDisabled}
       isLoading={ButtonProps.isLoading}
       endContent={ButtonProps.endContent}
       startContent={ButtonProps.startContent}
       as={ButtonProps.as}
       href={ButtonProps.href}
       target={ButtonProps.target}
+      type={ButtonProps.type}
       onPress={ButtonProps.onPress}
       className={cn(
         fullWidth && 'w-full',
