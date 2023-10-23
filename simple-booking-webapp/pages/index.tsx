@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { Link } from '@nextui-org/react'
 
+import Layout from '@/components/Layout'
 import FormButton from '@/components/FormItems/FormButton'
 import HowItWorks from '@/components/HowItWorks'
-import Layout from '@/components/Layout'
 import Appointments from '@/components/Appointments'
-import { Link } from '@nextui-org/react'
-import BookModal from '@/components/Modals/BookModal'
 import AppointmentForm from '@/components/AppointmentForm'
 
 export default function Home() {
@@ -13,7 +12,7 @@ export default function Home() {
     <Layout>
       <div>
         <h3>Welcome to SimpleBook</h3>
-        <h3 className='mb-8'>Book appointments in 3 easy steps!</h3>
+        <h3 className='mb-4 lg:mb-8'>Book appointments in 3 easy steps!</h3>
         <HowItWorks />
         <div className='flex flex-col items-center gap-2'>
           <FormButton type='submit' color='primary' as={Link} href='#form'>
@@ -23,9 +22,9 @@ export default function Home() {
             href='#appointments'
             size='sm'
             color='foreground'
-            className='opacity-60 cursor-pointer'
+            className='opacity-60 cursor-pointer underline underline-offset-2'
           >
-            or see existing appointments below
+            Or edit/cancel your appointment below
           </Link>
         </div>
       </div>

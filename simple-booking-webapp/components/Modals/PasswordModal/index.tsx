@@ -48,9 +48,9 @@ const PasswordModal: FC<Props> = ({ data, isOpen, onClose }) => {
       <ModalContent>
         <ModalBody>
           <form className='flex flex-col gap-5'>
-            <p className='leading-tight'>
-              By confirming your password below, you are agreeing to cancel your
-              appointment
+            <p>
+              By entering your password below, you are agreeing to cancel your
+              appointment.
             </p>
             <div>
               <FormInput

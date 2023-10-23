@@ -31,26 +31,26 @@ body {
 }
 
 h1 {
-  @apply text-[94px] font-light tracking-[-1.5px];
+  @apply text-4xl lg:text-[94px] font-light leading-tight tracking-[-1.5px];
 }
 h2 {
-  @apply text-[59px] font-light tracking-[-0.5px];
+  @apply text-3xl lg:text-[59px] font-light leading-tight tracking-[-0.5px];
 }
 h3 {
-  @apply text-[47px] font-normal;
+  @apply text-2xl lg:text-[47px] leading-tight font-normal;
 }
 h4 {
-  @apply text-[33px] font-normal tracking-[0.25px];
+  @apply text-xl lg:text-[33px] font-normal leading-tight tracking-[0.25px];
 }
 h5 {
-  @apply text-2xl font-normal;
+  @apply text-lg lg:text-2xl leading-tight font-normal;
 }
 h6 {
-  @apply text-xl font-medium tracking-[0.15px];
+  @apply text-base lg:text-xl font-medium leading-tight tracking-[0.15px];
 }
 p {
-  @apply text-base font-normal tracking-[0.5px];
+  @apply text-base font-normal leading-tight tracking-[0.5px];
 }
 small {
-  @apply text-xs font-normal tracking-[0.4px];
+  @apply text-xs font-normal leading-tight tracking-[0.4px];
 }

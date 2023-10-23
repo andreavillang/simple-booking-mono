@@ -12,27 +12,24 @@ import {
   Tooltip,
 } from '@nextui-org/react'
 
-import styles from './styles.module.scss'
 import Edit from '../Icons/Edit'
 import Delete from '../Icons/Delete'
-import { bookingTableData, bookingTableHeaders } from '@/utils/data'
 import PasswordModal from '../Modals/PasswordModal'
-import { Appointment } from '@/pages/types'
 import BookModal from '../Modals/BookModal'
-import FormInput from '../FormItems/FormInput'
-import FormButton from '../FormItems/FormButton'
+import DateFilter from './DateFilter'
+import { Appointment } from '@/pages/types'
+import { bookingTableData, bookingTableHeaders } from '@/utils/data'
+import { filterAppointments } from '@/utils/functions'
 
 const Appointments = () => {
+  const ACTION_ICON_SIZE = '20'
+
+  const [filtered, setFiltered] = useState<Appointment[]>(bookingTableData)
   const [selected, setSelected] = useState<Appointment>()
   const [isDeleteModalVisible, setIsDeleteModalVisible] =
     useState<boolean>(false)
   const [isBookingModalVisible, setIsBookingModalVisible] =
     useState<boolean>(false)
-
-  const [startDate, setStartDate] = useState<string>()
-  const [endDate, setEndDate] = useState<string>()
-
-  const ACTION_ICON_SIZE = '20'
 
   const formatDate = (date: Date) => {
     return moment(date).format('MMM DD, YYYY')
@@ -95,56 +92,28 @@ const Appointments = () => {
     th: 'bg-card',
   }
 
-  const filterResults = () => {}
+  const filterResults = (startDate: string, endDate: string | undefined) => {
+    const results: Appointment[] = filterAppointments(
+      bookingTableData,
+      startDate,
+      endDate
+    )
 
-  const buttonDisabled =
-    !startDate || moment().diff(moment(startDate), 'days') >= 1
+    setFiltered([...results])
+  }
 
   return (
     <>
       <div id='appointments'>
         <h6>Current Appointments</h6>
-        <p className='opacity-60 mb-8 leading-tight'>
+        <p className='opacity-60 mb-8'>
           See a list of all active appointments. You can edit or delete yours
           below.
         </p>
 
         <small className='ml-1'>Filter by date:</small>
         <div className='flex flex-col gap-6 mt-2'>
-          <div className='flex gap-x-4 items-center'>
-            <div className='inline-block'>
-              <FormInput
-                type='date'
-                label='Start Date'
-                placeholder='Click to set date'
-                onValueChange={(e) => {
-                  setStartDate(e)
-                  setEndDate('')
-                }}
-                value={startDate}
-                isRequired
-                min={moment().format('YYYY-MM-DD')}
-              />
-            </div>
-            <div className='inline-block'>
-              <FormInput
-                isDisabled={!startDate}
-                type='date'
-                label='End Date'
-                placeholder='Click to set date'
-                onValueChange={setEndDate}
-                value={endDate}
-                min={moment(startDate).add(1, 'day').format('YYYY-MM-DD')}
-              />
-            </div>
-            <FormButton
-              isDisabled={buttonDisabled}
-              onPress={() => filterResults()}
-            >
-              Filter
-            </FormButton>
-          </div>
-
+          <DateFilter handleFilter={filterResults} />
           <Table
             aria-label='Example table with custom cells'
             classNames={customStyles}
@@ -159,7 +128,7 @@ const Appointments = () => {
                 </TableColumn>
               )}
             </TableHeader>
-            <TableBody items={bookingTableData}>
+            <TableBody emptyContent='No appointments found' items={filtered}>
               {(item) => (
                 <TableRow key={item.id}>
                   {(columnKey) => (
