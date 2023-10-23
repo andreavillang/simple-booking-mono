@@ -18,7 +18,7 @@ const BookModal: FC<Props> = ({ data, isOpen, onClose }) => {
   const { onOpenChange } = useDisclosure()
 
   const customStyles = {
-    base: 'bg-card py-4',
+    base: 'bg-card py-4 dark',
     closeButton: 'hover:bg-background',
   }
 

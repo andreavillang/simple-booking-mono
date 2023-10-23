@@ -82,6 +82,10 @@ const AppointmentForm: FC<Props> = ({
 
   const buttonDisabled = !isValid
 
+  const setPasswordHeader = isEditForm
+    ? 'Enter your password to confirm your edits'
+    : 'We need a password so you can edit or cancel your appointments anytime'
+
   return (
     <div id='form' className='mx-auto w-full lg:max-w-[600px]'>
       <h6>{header}</h6>
@@ -187,12 +191,10 @@ const AppointmentForm: FC<Props> = ({
           </div>
         </div>
 
+        <hr className='border-card-lightest border-2 opacity-50 mt-2' />
+
         <div>
-          {isEditForm && (
-            <small className='ml-1 font-medium'>
-              Enter your password to confirm your edits
-            </small>
-          )}
+          <small className='ml-1 font-medium'>{setPasswordHeader}</small>
           <div className='relative mt-2'>
             <Controller
               name='password'

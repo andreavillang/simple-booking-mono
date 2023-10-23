@@ -23,7 +23,7 @@ const PasswordModal: FC<Props> = ({ data, isOpen, onClose }) => {
   const [passwordError, setPasswordError] = useState<boolean>(false)
 
   const customStyles = {
-    base: 'bg-card py-6',
+    base: 'bg-card py-6 dark',
     closeButton: 'hover:bg-background',
   }
 
