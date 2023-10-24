@@ -2,6 +2,6 @@ export interface Appointment {
   id: string
   name: string
   comments: string
-  date: Date
+  schedule: Date
   password: string
 }

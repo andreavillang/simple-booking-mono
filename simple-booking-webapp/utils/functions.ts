@@ -13,9 +13,9 @@ export const filterAppointments = (
   const resArr: Appointment[] = []
 
   data.filter((item) => {
-    const when = moment(item.date, 'YYYY-MM-DD', true).startOf('day')
-    const start = moment(startDate, 'YYYY-MM-DD', true).startOf('day')
-    const end = moment(endDate, 'YYYY-MM-DD', true).startOf('day')
+    const when = moment(formatDateForInput(item.schedule))
+    const start = moment(formatDateForInput(startDate))
+    const end = endDate ? moment(formatDateForInput(endDate)) : undefined
     const isWithinRange = when.isBetween(start, end, undefined, '[]')
 
     if (!endDate && when.isSame(start)) {

@@ -34,20 +34,17 @@ const AppointmentForm: FC<Props> = ({
   data,
 }) => {
   const [selectedTime, setSelectedTime] = useState<string>(
-    data?.date
-      ? moment(data?.date)
+    data?.schedule
+      ? moment(data.schedule)
           .format('H')
-          .toString()
       : ''
   )
 
   const formDefaultValues = {
     name: data?.name ? data.name : '',
     comments: data?.comments ? data.comments : '',
-    date: data?.date
-      ? moment(data?.date)
-          .format('YYYY-MM-DD')
-          .toString()
+    date: data?.schedule
+      ? formatDateForInput(data.schedule)
       : '',
     password: '',
   }

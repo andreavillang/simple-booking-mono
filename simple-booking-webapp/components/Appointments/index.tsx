@@ -1,16 +1,19 @@
-import React, { useState } from 'react'
+import React, { FC, useState } from 'react'
 import DateFilter from './DateFilter'
 import { Appointment } from '@/pages/types'
-import { bookingTableData } from '@/utils/data'
 import { filterAppointments } from '@/utils/functions'
 import AppointmentsTable from './AppointmentsTable'
 
-const Appointments = () => {
-  const [filtered, setFiltered] = useState<Appointment[]>(bookingTableData)
+interface Props {
+  data: Appointment[]
+}
+
+const Appointments: FC<Props> = ({ data }) => {
+  const [filtered, setFiltered] = useState<Appointment[]>(data)
 
   const filterResults = (startDate: string, endDate: string | undefined) => {
     const results: Appointment[] = filterAppointments(
-      bookingTableData,
+      data,
       startDate,
       endDate
     )

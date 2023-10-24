@@ -1,13 +1,18 @@
-import React from 'react'
-import { Link } from '@nextui-org/react'
+import React, { FC } from 'react'
+import { Link, Spinner } from '@nextui-org/react'
 
 import Layout from '@/components/Layout'
 import FormButton from '@/components/FormItems/FormButton'
 import HowItWorks from '@/components/HowItWorks'
 import Appointments from '@/components/Appointments'
 import AppointmentForm from '@/components/AppointmentForm'
+import { Appointment } from './types'
 
-export default function Home() {
+interface Props {
+  data: Appointment[]
+}
+
+const Home: FC<Props> = ({ data }) => {
   return (
     <Layout>
       <div>
@@ -29,13 +34,31 @@ export default function Home() {
         </div>
       </div>
 
-      <div className='mt-32'>
-        <Appointments />
-      </div>
+      {data ? (
+        <>
+          <div className='mt-20 lg:mt-32'>
+            <Appointments data={data} />
+          </div>
+          <div className='mt-20 lg:mt-32'>
+            <AppointmentForm />
+          </div>
+        </>
+      ) : (
+        <p className='mt-20 lg:mt-32 text-center opacity-60'>Oh no! No data source found 😱</p>
+      )}
 
-      <div className='mt-32'>
-        <AppointmentForm />
-      </div>
     </Layout>
   )
 }
+
+export default Home
+
+export async function getServerSideProps() {
+  // Fetch data from external API
+  const res = await fetch(`http://localhost:8080/api/appointments`)
+  const data: Appointment[] = await res.json()
+
+  // Pass data to the page via props
+  return { props: { data } }
+}
+
