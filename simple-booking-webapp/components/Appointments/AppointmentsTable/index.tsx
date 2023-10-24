@@ -43,9 +43,9 @@ const AppointmentsTable: FC<Props> = ({ data }) => {
 
     switch (columnKey) {
       case 'date':
-        return <small>{formatDate(data.date)}</small>
+        return <small>{formatDate(data.schedule)}</small>
       case 'time':
-        return <small>{formatTime(data.date)}</small>
+        return <small>{formatTime(data.schedule)}</small>
       case 'name':
         return <small>{data.name}</small>
       case 'actions':
