@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react'
 import {
-  Input,
   Modal,
   ModalBody,
   ModalContent,
@@ -9,6 +8,7 @@ import {
 import FormButton from '../../FormItems/FormButton'
 import FormInput from '@/components/FormItems/FormInput'
 import { Appointment } from '@/pages/types'
+import { deleteAppointment } from '@/utils/apiRequests'
 
 interface Props {
   isOpen: boolean
@@ -20,18 +20,19 @@ const PasswordModal: FC<Props> = ({ data, isOpen, onClose }) => {
   const { onOpenChange } = useDisclosure()
 
   const [password, setPassword] = useState<string>('')
-  const [passwordError, setPasswordError] = useState<boolean>(false)
+  const [passwordError, setPasswordError] = useState<string>('')
 
   const customStyles = {
     base: 'bg-card py-6 dark',
     closeButton: 'hover:bg-background',
   }
 
-  const onSubmit = (passwordData: string) => {
-    if (data?.password === passwordData) {
-      console.log('passwords match')
+  const onSubmit = async (passwordData: string) => {
+    if (data) {
+      const error = await deleteAppointment(data.id!, passwordData)
+      error && setPasswordError(error)
     } else {
-      setPasswordError(true)
+      setPasswordError('Sorry! Something went wrong')
     }
   }
 
@@ -58,15 +59,15 @@ const PasswordModal: FC<Props> = ({ data, isOpen, onClose }) => {
                 placeholder='Enter your password'
                 onValueChange={(e) => {
                   setPassword(e)
-                  setPasswordError(false)
+                  setPasswordError('')
                 }}
                 value={password}
                 isRequired
-                hasError={passwordError}
+                hasError={passwordError.length !== 0 && true}
               />
               {passwordError && (
                 <small className='text-danger mt-1 ml-1'>
-                  You have entered the wrong password
+                  {passwordError}
                 </small>
               )}
             </div>

@@ -1,6 +1,3 @@
-import { Appointment } from '@/pages/types'
-import moment from 'moment'
-
 export const bookingTableHeaders = [
   { name: 'DATE', uid: 'date' },
   { name: 'TIME', uid: 'time' },
@@ -44,57 +41,5 @@ export const timeSlots = [
   {
     label: '4 PM',
     value: '16',
-  },
-]
-
-export const dummyData: Appointment[] = [
-  {
-    id: '1',
-    schedule: moment('October 24, 2023 08:00:00').toDate(),
-    name: 'Tony Reichert',
-    comments: 'This is my comment about my booking information',
-    password: '1234',
-  },
-  {
-    id: '2',
-    schedule: moment('October 25, 2023 09:00:00').toDate(),
-    name: 'Zoey Lang',
-    comments: 'This is my comment about my booking information',
-    password: 'abcd',
-  },
-  {
-    id: '3',
-    schedule: moment('October 26, 2023 10:00:00').toDate(),
-    name: 'Jane Fisher',
-    comments: 'This is my comment about my booking information',
-    password: '1234',
-  },
-  {
-    id: '4',
-    schedule: moment('October 27, 2023 13:00:00').toDate(),
-    name: 'William Howard',
-    comments: 'This is my comment about my booking information',
-    password: 'abcd',
-  },
-  {
-    id: '5',
-    schedule: moment('October 27, 2023 15:00:00').toDate(),
-    name: 'Kristen Copper',
-    comments: 'This is my comment about my booking information',
-    password: '1234',
-  },
-  {
-    id: '6',
-    schedule: moment('October 24, 2023 09:00:00').toDate(),
-    name: 'Tony Reichert II',
-    comments: 'This is my comment about my booking information',
-    password: '1234',
-  },
-  {
-    id: '7',
-    schedule: moment('October 24, 2023 11:00:00').toDate(),
-    name: 'Tony Reichert III',
-    comments: 'This is my comment about my booking information',
-    password: '1234',
   },
 ]

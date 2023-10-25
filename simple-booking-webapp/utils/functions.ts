@@ -1,6 +1,10 @@
 import { Appointment } from '@/pages/types'
 import moment, { Moment } from 'moment'
 
+export const getTomorrow = () => {
+  return moment().add(1, 'day').endOf('day')
+}
+
 export const formatDateForInput = (date: Date | string | Moment) => {
   return moment(date).format('YYYY-MM-DD')
 }

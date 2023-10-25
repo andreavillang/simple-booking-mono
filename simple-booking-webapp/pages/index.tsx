@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import { Link, Spinner } from '@nextui-org/react'
 
 import Layout from '@/components/Layout'
