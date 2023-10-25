@@ -33,7 +33,6 @@ const DateFilter: FC<Props> = ({ handleFilter }) => {
               setEndDate('')
             }}
             value={startDate}
-            isRequired
             min={formatDateForInput(TOMORROW)}
           />
         </div>
