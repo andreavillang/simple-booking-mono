@@ -31,9 +31,10 @@ A simple way to book appointments. No login required.
 
 ## List of backend API slugs
 1. LIST: http://localhost:8080/api/appointments
-2. CREATE: http://localhost:8080/api/appointments/create
+   <hr></h2>
+3. CREATE: http://localhost:8080/api/appointments/create
    
-   Accepts `Content-Type: application/json` body
+   - Accepts `Content-Type: application/json` body
    
    Sample:
    ```
@@ -44,13 +45,16 @@ A simple way to book appointments. No login required.
     "password": "1234"
    }
    ```
+   
    Things to note:
    - schedule time accepts whole hours only (no minutes or seconds)
    - all fields above need to be filled
-3. UPDATE: http://localhost:8080/api/appointments/update/{id}
+   <hr></h2>
+4. UPDATE: http://localhost:8080/api/appointments/update/{id}
    
-   Provide ID of appointment inside `{id}`
-   Accepts `Content-Type: application/json` body
+   - Provide ID of appointment inside `{id}`
+   
+   - Accepts `Content-Type: application/json` body
    
    Sample:
    ```
@@ -61,22 +65,28 @@ A simple way to book appointments. No login required.
     "password": "1234"
    }
    ```
+   
    Things to note:
    - schedule time accepts whole hours only (no minutes or seconds)
    - all fields above need to be filled
    - password must match password of the appointment to update
-4. DELETE: http://localhost:8080/api/appointments/delete/{id}
+   <hr></h2>
+5. DELETE: http://localhost:8080/api/appointments/delete/{id}
    
-   Provide ID of appointment inside `{id}`
-   Accepts `Content-Type: text/plain` body
+   - Provide ID of appointment inside `{id}`
+   
+   - Accepts `Content-Type: text/plain` body
 
    Sample of passing password of above data:
    ```
    1234
    ```
+   
    Things to note:
    - password must match password of the appointment to delete
-5. GET: http://localhost:8080/api/appointments/{id}
+   <hr></h2>
+7. GET: http://localhost:8080/api/appointments/{id}
    
-   Provide ID of appointment inside `{id}`
-   Returns Appointment data
+   - Provide ID of appointment inside `{id}`
+   
+   - Returns Appointment data
