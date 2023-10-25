@@ -55,8 +55,14 @@ const Home: FC<Props> = ({ data }) => {
 export default Home
 
 export async function getServerSideProps() {
-  const res = await fetch(`http://localhost:8080/api/appointments`)
-  const data: Appointment[] = await res.json()
+  let data
+
+  try {
+    const res = await fetch(`http://localhost:8080/api/appointments`)
+    data = await res.json() as Appointment
+  } catch (error) {
+    data = null
+  }
 
   return { props: { data } }
 }

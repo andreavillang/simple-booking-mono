@@ -43,8 +43,6 @@ export const updateAppointment = async (id: string, data: Appointment) => {
       body: requestBody,
     })
 
-    console.log(res)
-
     let message = ''
     switch (res.status) {
       case 204:
@@ -73,8 +71,6 @@ export const deleteAppointment = async (id: string, password: string) => {
       body: password,
     })
 
-    console.log(res)
-
     let message = ''
     switch (res.status) {
       case 204:
@@ -82,6 +78,10 @@ export const deleteAppointment = async (id: string, password: string) => {
         break
       case 403:
         message = 'You have entered the wrong password'
+        break
+      case 400:
+        message = 'That appointment has already ended'
+        break
     }
     return message
   } catch (error) {
