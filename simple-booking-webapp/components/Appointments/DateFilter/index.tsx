@@ -1,8 +1,12 @@
+import { FC, useState } from 'react'
+import moment from 'moment'
+
 import FormButton from '@/components/FormItems/FormButton'
 import FormInput from '@/components/FormItems/FormInput'
-import { formatDateForInput, isDateBeforeToday } from '@/utils/functions'
-import moment from 'moment'
-import { FC, useState } from 'react'
+import {
+  formatDateForInput,
+  isDateBeforeToday,
+} from '@/utils/functions'
 
 interface Props {
   handleFilter: (startDate: string, endDate: string | undefined) => void
@@ -12,7 +16,7 @@ const DateFilter: FC<Props> = ({ handleFilter }) => {
   const [startDate, setStartDate] = useState<string>()
   const [endDate, setEndDate] = useState<string>()
 
-  const buttonDisabled = !startDate || isDateBeforeToday(startDate)
+  const buttonDisabled = isDateBeforeToday(startDate!)
 
   return (
     <div className='flex flex-col md:flex-row gap-4 items-start md:items-center'>
@@ -27,7 +31,6 @@ const DateFilter: FC<Props> = ({ handleFilter }) => {
               setEndDate('')
             }}
             value={startDate}
-            isRequired
             min={formatDateForInput(moment())}
           />
         </div>

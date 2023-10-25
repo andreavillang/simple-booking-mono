@@ -9,12 +9,13 @@ import FormTextArea from '../FormItems/FormTextArea'
 import TimeCheckbox from './TimeCheckbox'
 import { Appointment } from '@/pages/types'
 import { timeSlots } from '@/utils/data'
-import { formatDateForInput } from '@/utils/functions'
+import { formatDateForInput, getTomorrow } from '@/utils/functions'
+import { createAppointment, updateAppointment } from '@/utils/apiRequests'
 
 type Inputs = {
   name: string
   comments: string
-  date: string
+  schedule: string
   password: string
 }
 
@@ -33,19 +34,17 @@ const AppointmentForm: FC<Props> = ({
   isEditForm,
   data,
 }) => {
+  const TOMORROW = getTomorrow()
+
+  const [formError, setFormError] = useState<string>('')
   const [selectedTime, setSelectedTime] = useState<string>(
-    data?.schedule
-      ? moment(data.schedule)
-          .format('H')
-      : ''
+    data?.schedule ? moment(data.schedule).format('H') : ''
   )
 
   const formDefaultValues = {
     name: data?.name ? data.name : '',
     comments: data?.comments ? data.comments : '',
-    date: data?.schedule
-      ? formatDateForInput(data.schedule)
-      : '',
+    schedule: data?.schedule ? formatDateForInput(data.schedule) : '',
     password: '',
   }
 
@@ -61,23 +60,37 @@ const AppointmentForm: FC<Props> = ({
     defaultValues: formDefaultValues,
   })
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<Inputs> = async (formData) => {
     const requestData = {
-      name: data.name.trim(),
-      comments: data.comments.trim(),
-      date: moment(`${data.date} ${selectedTime}:00:00`).format(),
-      password: data.password.trim(),
+      id: '',
+      name: formData.name.trim(),
+      comments: formData.comments.trim(),
+      schedule: moment(`${formData.schedule} ${selectedTime}:00:00`).format(
+        'YYYY-MM-DDTHH:mm:SS'
+      ),
+      password: formData.password.trim(),
     }
 
-    console.log(requestData)
+    if (isEditForm) {
+      const error = await updateAppointment(data!.id, requestData)
+      setFormError(error)
+    } else {
+      const error = await createAppointment(requestData)
+      setFormError(error)
+    }
 
-    alert('Thank you for submitting your appointment')
-    setSelectedTime('')
-    reset()
+    const resetForm = {
+      name: requestData.name,
+      comments: requestData.comments,
+      schedule: formData.schedule,
+      password: '',
+    }
+
+    reset(resetForm)
     trigger()
   }
 
-  const buttonDisabled = !isValid
+  const buttonDisabled = !isValid || !selectedTime
 
   const setPasswordHeader = isEditForm
     ? 'Enter your password to confirm your edits'
@@ -145,12 +158,12 @@ const AppointmentForm: FC<Props> = ({
         </div>
         <div className='relative'>
           <Controller
-            name='date'
+            name='schedule'
             control={control}
             rules={{
               required: 'Please select a date',
               min: {
-                value: formatDateForInput(moment()),
+                value: formatDateForInput(TOMORROW),
                 message: 'Please select a valid date',
               },
             }}
@@ -162,14 +175,14 @@ const AppointmentForm: FC<Props> = ({
                 onValueChange={onChange}
                 value={value}
                 isRequired
-                min={formatDateForInput(moment())}
-                hasError={errors.date && true}
+                min={formatDateForInput(TOMORROW)}
+                hasError={errors.schedule && true}
               />
             )}
           />
-          {errors.date && (
+          {errors.schedule && (
             <small className='absolute left-0 -bottom-4 text-danger ml-1'>
-              {errors.date.message}
+              {errors.schedule.message}
             </small>
           )}
         </div>
@@ -221,10 +234,15 @@ const AppointmentForm: FC<Props> = ({
           </div>
         </div>
 
-        <div className='flex justify-center'>
-          <FormButton type='submit' isDisabled={buttonDisabled}>
-            {isEditForm ? 'Edit appointment' : 'Book appointment'}
-          </FormButton>
+        <div>
+          <div className='flex flex-col items-center'>
+            <FormButton type='submit' isDisabled={buttonDisabled}>
+              {isEditForm ? 'Edit appointment' : 'Book appointment'}
+            </FormButton>
+          </div>
+          {formError && (
+            <small className='text-danger font-medium mt-1'>{formError}</small>
+          )}
         </div>
       </form>
     </div>

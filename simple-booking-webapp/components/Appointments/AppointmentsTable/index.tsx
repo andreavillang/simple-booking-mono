@@ -30,11 +30,11 @@ const AppointmentsTable: FC<Props> = ({ data }) => {
   const [isBookingModalVisible, setIsBookingModalVisible] =
     useState<boolean>(false)
 
-  const formatDate = (date: Date) => {
+  const formatDate = (date: string) => {
     return moment(date).format('MMM DD, YYYY')
   }
 
-  const formatTime = (date: Date) => {
+  const formatTime = (date: string) => {
     return moment(date).format('h a')
   }
 

@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Link, Spinner } from '@nextui-org/react'
+import { Link } from '@nextui-org/react'
 
 import Layout from '@/components/Layout'
 import FormButton from '@/components/FormItems/FormButton'
@@ -44,9 +44,10 @@ const Home: FC<Props> = ({ data }) => {
           </div>
         </>
       ) : (
-        <p className='mt-20 lg:mt-32 text-center opacity-60'>Oh no! No data source found 😱</p>
+        <p className='mt-20 lg:mt-32 text-center opacity-60'>
+          Oh no! No data source found 😱
+        </p>
       )}
-
     </Layout>
   )
 }
@@ -54,11 +55,8 @@ const Home: FC<Props> = ({ data }) => {
 export default Home
 
 export async function getServerSideProps() {
-  // Fetch data from external API
   const res = await fetch(`http://localhost:8080/api/appointments`)
   const data: Appointment[] = await res.json()
 
-  // Pass data to the page via props
   return { props: { data } }
 }
-

@@ -1,5 +1,5 @@
-import { Input, InputProps } from '@nextui-org/react'
 import { FC } from 'react'
+import { Input, InputProps } from '@nextui-org/react'
 
 interface Props extends InputProps {
   hasError?: boolean
