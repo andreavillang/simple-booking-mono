@@ -11,10 +11,14 @@ export const formatDateForInput = (date: Date | string | Moment) => {
 
 export const filterAppointments = (
   data: Appointment[],
-  startDate: string,
+  startDate: string | undefined,
   endDate: string | undefined
 ) => {
   const resArr: Appointment[] = []
+
+  if (!startDate) {
+    return data
+  }
 
   data.filter((item) => {
     const when = moment(formatDateForInput(item.schedule))

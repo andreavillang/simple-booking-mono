@@ -11,12 +11,11 @@ interface Props {
 const Appointments: FC<Props> = ({ data }) => {
   const [filtered, setFiltered] = useState<Appointment[]>(data)
 
-  const filterResults = (startDate: string, endDate: string | undefined) => {
-    const results: Appointment[] = filterAppointments(
-      data,
-      startDate,
-      endDate
-    )
+  const filterResults = (
+    startDate: string | undefined,
+    endDate: string | undefined
+  ) => {
+    const results: Appointment[] = filterAppointments(data, startDate, endDate)
 
     setFiltered([...results])
   }

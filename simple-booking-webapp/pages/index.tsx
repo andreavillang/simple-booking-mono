@@ -44,9 +44,10 @@ const Home: FC<Props> = ({ data }) => {
           </div>
         </>
       ) : (
-        <p className='mt-20 lg:mt-32 text-center opacity-60'>Oh no! No data source found 😱</p>
+        <p className='mt-20 lg:mt-32 text-center opacity-60'>
+          Oh no! No data source found 😱
+        </p>
       )}
-
     </Layout>
   )
 }
@@ -61,4 +62,3 @@ export async function getServerSideProps() {
   // Pass data to the page via props
   return { props: { data } }
 }
-

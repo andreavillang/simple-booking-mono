@@ -6,16 +6,13 @@ const BASE_URL = 'http://localhost:8080'
 export const createAppointment = async (data: Appointment) => {
   try {
     const requestBody = JSON.stringify(data)
-    const res = await fetch(
-      `${BASE_URL}/api/appointments/create`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: requestBody
-      }
-    )
+    const res = await fetch(`${BASE_URL}/api/appointments/create`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: requestBody,
+    })
 
     let message = ''
     switch (res.status) {
@@ -30,7 +27,6 @@ export const createAppointment = async (data: Appointment) => {
         break
     }
     return message
-
   } catch (error) {
     return 'Sorry! Something went wrong'
   }
@@ -39,16 +35,13 @@ export const createAppointment = async (data: Appointment) => {
 export const updateAppointment = async (id: string, data: Appointment) => {
   try {
     const requestBody = JSON.stringify(data)
-    const res = await fetch(
-      `${BASE_URL}/api/appointments/update/${id}`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: requestBody
-      }
-    )
+    const res = await fetch(`${BASE_URL}/api/appointments/update/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: requestBody,
+    })
 
     console.log(res)
 
@@ -72,16 +65,13 @@ export const updateAppointment = async (id: string, data: Appointment) => {
 
 export const deleteAppointment = async (id: string, password: string) => {
   try {
-    const res = await fetch(
-      `${BASE_URL}/api/appointments/delete/${id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'text/plain'
-        },
-        body: password
-      }
-    )
+    const res = await fetch(`${BASE_URL}/api/appointments/delete/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'text/plain',
+      },
+      body: password,
+    })
 
     console.log(res)
 
@@ -94,7 +84,6 @@ export const deleteAppointment = async (id: string, password: string) => {
         message = 'You have entered the wrong password'
     }
     return message
-
   } catch (error) {
     return 'Sorry! Something went wrong'
   }

@@ -38,19 +38,14 @@ const AppointmentForm: FC<Props> = ({
 
   const [formError, setFormError] = useState<string>('')
   const [selectedTime, setSelectedTime] = useState<string>(
-    data?.schedule
-      ? moment(data.schedule)
-          .format('H')
-      : ''
+    data?.schedule ? moment(data.schedule).format('H') : ''
   )
 
   const formDefaultValues = {
     name: data?.name ? data.name : '',
     comments: data?.comments ? data.comments : '',
-    schedule: data?.schedule
-      ? formatDateForInput(data.schedule)
-      : '',
-    password: ''
+    schedule: data?.schedule ? formatDateForInput(data.schedule) : '',
+    password: '',
   }
 
   const {
@@ -70,7 +65,9 @@ const AppointmentForm: FC<Props> = ({
       id: '',
       name: formData.name.trim(),
       comments: formData.comments.trim(),
-      schedule: moment(`${formData.schedule} ${selectedTime}:00:00`).format('YYYY-MM-DDTHH:mm:SS'),
+      schedule: moment(`${formData.schedule} ${selectedTime}:00:00`).format(
+        'YYYY-MM-DDTHH:mm:SS'
+      ),
       password: formData.password.trim(),
     }
 
@@ -86,7 +83,7 @@ const AppointmentForm: FC<Props> = ({
       name: requestData.name,
       comments: requestData.comments,
       schedule: formData.schedule,
-      password: ''
+      password: '',
     }
 
     reset(resetForm)
@@ -243,9 +240,9 @@ const AppointmentForm: FC<Props> = ({
               {isEditForm ? 'Edit appointment' : 'Book appointment'}
             </FormButton>
           </div>
-          {formError &&
+          {formError && (
             <small className='text-danger font-medium mt-1'>{formError}</small>
-          }
+          )}
         </div>
       </form>
     </div>

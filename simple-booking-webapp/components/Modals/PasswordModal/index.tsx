@@ -66,9 +66,7 @@ const PasswordModal: FC<Props> = ({ data, isOpen, onClose }) => {
                 hasError={passwordError.length !== 0 && true}
               />
               {passwordError && (
-                <small className='text-danger mt-1 ml-1'>
-                  {passwordError}
-                </small>
+                <small className='text-danger mt-1 ml-1'>{passwordError}</small>
               )}
             </div>
             <div className='flex justify-center'>
