@@ -3,6 +3,7 @@ package com.example.backend.controller;
 import com.example.backend.model.Appointment;
 import com.example.backend.repository.AppointmentRepository;
 import jakarta.validation.Valid;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/appointments")
 public class AppointmentController {
@@ -34,10 +36,13 @@ public class AppointmentController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/create")
     public void create(@Valid @RequestBody Appointment appointment) {
-        if (repository.findBySchedule(appointment.schedule()).isEmpty()) {
+        LocalDateTime schedule = appointment.schedule();
+        boolean isWholeHour = schedule.getMinute() == 0 & schedule.getSecond() == 0 & schedule.getNano() == 0;
+
+        if (isWholeHour && repository.findBySchedule(appointment.schedule()).isEmpty()) {
             repository.save(appointment);
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "An appointment with that schedule already existss");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -47,7 +52,6 @@ public class AppointmentController {
         if (!repository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Appointment to be updated wasn't found");
         }
-
 
         String requestPassword = appointment.password();
         LocalDateTime requestSchedule = appointment.schedule();
@@ -61,10 +65,10 @@ public class AppointmentController {
                 Appointment updatedAppt = new Appointment(currentId, appointment.name(), appointment.comments(), appointment.schedule(), appointment.password());
                 repository.save(updatedAppt);
             } else {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "An appointment with that schedule already existss");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "An appointment with that schedule already exists");
             }
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You've entered the wrong password");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You've entered the wrong password");
         }
     }
 
@@ -79,7 +83,7 @@ public class AppointmentController {
         if (password.equals(appointmentPassword)) {
             repository.deleteById(id);
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You've entered the wrong password");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You've entered the wrong password");
         }
     }
 }

@@ -1,16 +1,24 @@
 import { Appointment } from '@/pages/types'
 import moment, { Moment } from 'moment'
 
+export const getTomorrow = () => {
+  return moment().add(1, 'day').endOf('day')
+}
+
 export const formatDateForInput = (date: Date | string | Moment) => {
   return moment(date).format('YYYY-MM-DD')
 }
 
 export const filterAppointments = (
   data: Appointment[],
-  startDate: string,
+  startDate: string | undefined,
   endDate: string | undefined
 ) => {
   const resArr: Appointment[] = []
+
+  if (!startDate) {
+    return data
+  }
 
   data.filter((item) => {
     const when = moment(formatDateForInput(item.schedule))
