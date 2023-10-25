@@ -2,13 +2,15 @@ package com.example.backend.controller;
 
 import com.example.backend.model.Appointment;
 import com.example.backend.repository.AppointmentRepository;
+import com.example.backend.service.AppointmentService;
 import jakarta.validation.Valid;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,9 +20,11 @@ import java.util.Optional;
 public class AppointmentController {
     // controllers accepts api requests and returns responses
     private final AppointmentRepository repository;
+    private final AppointmentService service;
 
-    public AppointmentController(AppointmentRepository repository) {
+    public AppointmentController(AppointmentRepository repository, AppointmentService service) {
         this.repository = repository;
+        this.service = service;
     }
 
     @GetMapping("")
@@ -37,9 +41,12 @@ public class AppointmentController {
     @PostMapping("/create")
     public void create(@Valid @RequestBody Appointment appointment) {
         LocalDateTime schedule = appointment.schedule();
-        boolean isWholeHour = schedule.getMinute() == 0 & schedule.getSecond() == 0 & schedule.getNano() == 0;
 
-        if (isWholeHour && repository.findBySchedule(appointment.schedule()).isEmpty()) {
+        boolean isWholeHour = service.isWholeHour(schedule);
+        boolean isValidDate = service.isScheduleAfterToday(schedule.toLocalDate());
+        boolean noScheduleDuplicate = repository.findBySchedule(appointment.schedule()).isEmpty();
+
+        if (isWholeHour && isValidDate && noScheduleDuplicate) {
             repository.save(appointment);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
@@ -50,25 +57,28 @@ public class AppointmentController {
     @PutMapping("/update/{id}")
     public void update(@PathVariable Integer id, @Valid @RequestBody Appointment appointment) {
         if (!repository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Appointment to be updated wasn't found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        String requestPassword = appointment.password();
         LocalDateTime requestSchedule = appointment.schedule();
 
         Optional<Appointment> currentAppt = repository.findById(id);
-        String currentPassword = currentAppt.get().password();
         int currentId = currentAppt.get().id();
 
-        if (requestPassword.equals(currentPassword)) {
-            if (repository.findByScheduleIgnoreCurrentId(requestSchedule, currentId).isEmpty()) {
+        boolean passwordMatches = service.validatePassword(currentAppt, appointment.password());
+        boolean isWholeHour = service.isWholeHour(requestSchedule);
+        boolean isValidDate = service.isScheduleAfterToday(requestSchedule.toLocalDate());
+        boolean noScheduleDuplicate = repository.findByScheduleIgnoreCurrentId(requestSchedule, currentId).isEmpty();
+
+        if (passwordMatches) {
+            if (isWholeHour && isValidDate && noScheduleDuplicate) {
                 Appointment updatedAppt = new Appointment(currentId, appointment.name(), appointment.comments(), appointment.schedule(), appointment.password());
                 repository.save(updatedAppt);
             } else {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "An appointment with that schedule already exists");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
             }
         } else {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You've entered the wrong password");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
     }
 
@@ -76,14 +86,15 @@ public class AppointmentController {
     @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable Integer id, @RequestBody String password) {
         if (!repository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Appointment to be updated wasn't found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        String appointmentPassword = repository.findById(id).get().password();
-        if (password.equals(appointmentPassword)) {
+        boolean passwordMatches = service.validatePassword(repository.findById(id), password);
+
+        if (passwordMatches) {
             repository.deleteById(id);
         } else {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You've entered the wrong password");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
     }
 }
