@@ -1,20 +1,18 @@
+import { FC, useState } from 'react'
+import moment from 'moment'
+
 import FormButton from '@/components/FormItems/FormButton'
 import FormInput from '@/components/FormItems/FormInput'
 import {
   formatDateForInput,
-  getTomorrow,
   isDateBeforeToday,
 } from '@/utils/functions'
-import moment from 'moment'
-import { FC, useState } from 'react'
 
 interface Props {
   handleFilter: (startDate: string, endDate: string | undefined) => void
 }
 
 const DateFilter: FC<Props> = ({ handleFilter }) => {
-  const TOMORROW = getTomorrow()
-
   const [startDate, setStartDate] = useState<string>()
   const [endDate, setEndDate] = useState<string>()
 
@@ -33,7 +31,7 @@ const DateFilter: FC<Props> = ({ handleFilter }) => {
               setEndDate('')
             }}
             value={startDate}
-            min={formatDateForInput(TOMORROW)}
+            min={formatDateForInput(moment())}
           />
         </div>
         <div className='inline-block'>

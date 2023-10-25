@@ -1,5 +1,5 @@
-import { TextAreaProps, Textarea } from '@nextui-org/react'
 import React, { FC } from 'react'
+import { TextAreaProps, Textarea } from '@nextui-org/react'
 
 interface Props extends TextAreaProps {
   hasError?: boolean

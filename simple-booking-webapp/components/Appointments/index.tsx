@@ -1,8 +1,9 @@
 import React, { FC, useState } from 'react'
+
+import AppointmentsTable from './AppointmentsTable'
 import DateFilter from './DateFilter'
 import { Appointment } from '@/pages/types'
 import { filterAppointments } from '@/utils/functions'
-import AppointmentsTable from './AppointmentsTable'
 
 interface Props {
   data: Appointment[]

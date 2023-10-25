@@ -5,6 +5,7 @@ import {
   ModalContent,
   useDisclosure,
 } from '@nextui-org/react'
+
 import AppointmentForm from '../../AppointmentForm'
 import { Appointment } from '@/pages/types'
 

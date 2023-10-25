@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+
 import Panel from './Panel'
 import CalendarEvent from '../Icons/CalendarEvent'
 import EditNote from '../Icons/EditNote'
