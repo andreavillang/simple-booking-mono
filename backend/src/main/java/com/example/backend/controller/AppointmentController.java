@@ -89,10 +89,16 @@ public class AppointmentController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
+        LocalDateTime schedule = repository.findById(id).get().schedule();
+        boolean isScheduleDone = service.isScheduleDone(schedule);
         boolean passwordMatches = service.validatePassword(repository.findById(id), password);
 
         if (passwordMatches) {
-            repository.deleteById(id);
+            if (isScheduleDone) {
+                repository.deleteById(id);
+            } else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            }
         } else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }

@@ -16,6 +16,12 @@ public class AppointmentService {
         return schedule.isAfter(dateToday);
     }
 
+    public boolean isScheduleDone(LocalDateTime schedule) {
+        LocalDateTime now = LocalDateTime.now(ZoneId.of( "Asia/Singapore" ));
+
+        return schedule.isAfter(now);
+    }
+
     public boolean isWholeHour(LocalDateTime schedule) {
         LocalDate dateToday = LocalDate.now(ZoneId.of( "Asia/Singapore" ));
 
